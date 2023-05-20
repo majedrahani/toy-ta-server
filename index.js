@@ -82,5 +82,5 @@ app.get("/", (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Toy ta is running on port ${port}`);
+  console.log(`Toy ta is running on port of ${port}`);
 })
