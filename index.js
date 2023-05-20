@@ -61,8 +61,27 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/uploads/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await uploadCollection.findOne(query);
+      res.send(result)
+    })
+
     app.put('/uploads/:id', async (req, res) => {
-      const updatedUpload = req.body;
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      // const options = { upsert: true }
+      const updatedToy = req.body;
+      const toy = {
+        $set: {
+          price: updatedToy.price,
+          quantity: updatedToy.quantity,
+          description: updatedToy.description
+        }
+      }
+      const result = await uploadCollection.updateOne(filter,  toy)
+      res.send(result)
     })
 
     app.delete('/uploads/:id', async (req, res) => {
