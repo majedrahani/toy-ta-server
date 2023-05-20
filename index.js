@@ -34,17 +34,30 @@ async function run() {
     const toysCategoryCollection = client.db('toyTa').collection('shopByCategoryData')
     const uploadCollection = client.db('toyTa').collection('uploads')
 
-    app.get('/categoryToys', async(req, res) =>{
+
+
+
+    app.get('/categoryToys', async (req, res) => {
       const cursor = toysCategoryCollection.find();
       const result = await cursor.toArray();
-      res.send(result); 
+      res.send(result);
     })
 
     // uploads
-    app.post('/uploads', async(req, res)=>{
+    app.post('/uploads', async (req, res) => {
       const upload = req.body;
       console.log(upload);
       const result = await uploadCollection.insertOne(upload);
+      res.send(result)
+    })
+
+    app.get('/uploads', async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email }
+      }
+      const result = await uploadCollection.find(query).toArray();
       res.send(result)
     })
 
@@ -64,10 +77,10 @@ run().catch(console.dir);
 
 
 
-app.get("/", (req, res) =>{
-    res.send('toy ta is running')
+app.get("/", (req, res) => {
+  res.send('toy ta is running')
 })
 
-app.listen(port, ()=>{
-    console.log(`Toy ta is running on port ${port}`);
+app.listen(port, () => {
+  console.log(`Toy ta is running on port ${port}`);
 })
