@@ -43,6 +43,13 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/categoryToys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await toysCategoryCollection.findOne(query);
+      res.send(result)
+    })
+
     // uploads
     app.post('/uploads', async (req, res) => {
       const upload = req.body;
@@ -57,7 +64,7 @@ async function run() {
       if (req.query?.email) {
         query = { email: req.query.email }
       }
-      const result = await uploadCollection.find(query).toArray();
+      const result = await uploadCollection.find(query).limit(20).toArray();
       res.send(result)
     })
 
